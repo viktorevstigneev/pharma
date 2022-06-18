@@ -1,0 +1,23 @@
+{
+	"extends": ["airbnb-base", "prettier"],
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js"]
+			}
+		}
+	},
+	"plugins": ["prettier"],
+	"rules": {
+		"prettier/prettier": ["error"],
+		"import/prefer-default-export": "off",
+		"import/extensions": "off"
+	},
+	"parserOptions": {
+		"ecmaVersion": 6
+	},
+	"env": {
+		"browser": true
+	},
+	"parser": "babel-eslint"
+}

@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+  gms-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: mongodb://mongo:27017/data
+    ports:
+      - '443:443'
+      - '3000:3000'
+    volumes:
+      - ./src/uploads/:/src/uploads/
