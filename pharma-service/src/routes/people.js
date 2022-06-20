@@ -8,7 +8,7 @@ const {
 	handleUploadPhoto,
 	handleUpdateTeam,
 	handleGetPerson,
-	handleOrderTeam
+	handleOrderTeam,
 } = require('../controllers/people');
 const isAuthenticated = require('../utils/isAuthenticated');
 

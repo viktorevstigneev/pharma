@@ -16,6 +16,7 @@ const Profile = ({ profile, honors, loadProfileData, loadHonorsData, match }) =>
 	const [user, setUser] = useState();
 	console.log('user: ', user);
 	const [order, setOrder] = useState();
+	const [summarySum, setSummaruSum] = useState(0);
 
 	useEffect(() => {
 		loadProfileData(match.params.id);
@@ -51,6 +52,19 @@ const Profile = ({ profile, honors, loadProfileData, loadHonorsData, match }) =>
 		alert('Заказ Отправлен');
 	};
 
+	let sum = 0;
+
+	const handleDeleteCartItem = async (evt) => {
+		const deleteItemId = evt.target.getAttribute('data-id');
+
+		const responseData = await axios
+			.patch(`${API_URL}/profile/order/delete`, { withCredentials: true, deleteItemId, userID: user._id })
+			.then((response) => response.data);
+		console.log('responseData: ', responseData);
+
+		window.location.reload();
+	};
+
 	return (
 		<Fragment>
 			<Header />
@@ -58,19 +72,36 @@ const Profile = ({ profile, honors, loadProfileData, loadHonorsData, match }) =>
 				<p className="profile__top">Корзина пользователя {profile.data?.username}</p>
 				{gotedData && gotedData.length ? (
 					gotedData &&
-					gotedData.map((item) => (
-						<div className="flex">
-							<p className="profile__top"> {item.name}</p>
-							<p className="profile__top"> {item.price} BYN</p>
-						</div>
-					))
+					gotedData.map((item) => {
+						console.log('item: ', item);
+						sum = +sum + +item.price;
+						return (
+							<div className="flex">
+								<div className="" style={{ display: 'flex', alignItems: 'center' }}>
+									<img
+										className="profile__cart-img"
+										src={`${API_URL}/getImage/${item.avatar}`}
+										alt="картинка препарата"
+									/>
+									<p className="profile__top"> {item.name}</p>
+								</div>
+								<p className="profile__top"> {item.price} BYN</p>
+								<p className="prifile__delete-item" data-id={item._id} onClick={handleDeleteCartItem}>
+									&times;
+								</p>
+							</div>
+						);
+					})
 				) : (
-					<p className="">no items</p>
+					<p className="">Ваша корзина пуста</p>
 				)}
 				{gotedData && gotedData.length ? (
-					<button className="order__prep" onClick={handleOrderPreparats}>
-						Заказать препараты
-					</button>
+					<>
+						<p className="profile_"> Общая стоимость препаратов : {sum} BYN</p>
+						<button className="order__prep" onClick={handleOrderPreparats}>
+							Заказать препараты
+						</button>
+					</>
 				) : null}
 			</div>
 

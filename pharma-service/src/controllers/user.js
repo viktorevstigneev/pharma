@@ -44,15 +44,38 @@ const handleDeleteUser = async (req, res) => {
 
 const handleUpdateUser = async (req, res) => {
 	try {
-		console.log('i dobavil novyi product');
-		console.log('req.body: ', req.body);
-		const result = await updateUser(req.body.userID, {userCart:  [req.body.productID]});
+		const getCurrentUser = await getUser(req.body.userID);
+		let newCart;
+		if (getCurrentUser.userCart) {
+			newCart = [...getCurrentUser.userCart, req.body.productID];
+		} else {
+			newCart = [req.body.productID];
+		}
+		const result = await updateUser(req.body.userID, { userCart: newCart });
 
 		res.status(HttpStatusCode.OK).send(result);
 	} catch (error) {
 		res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({ error });
 	}
 };
+
+
+const handleDeleteOrderItem = async (req, res) => {
+	try {
+		console.log('req.body: ', req.body);
+		const getCurrentUser = await getUser(req.body.userID);
+		let newCart;
+		if (getCurrentUser.userCart) {
+			newCart = getCurrentUser.userCart.filter((item) => item !== req.body.deleteItemId)
+		} 
+		const result = await updateUser(req.body.userID, { userCart: newCart });
+
+		res.status(HttpStatusCode.OK).send(result);
+	} catch (error) {
+		res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({ error });
+	}
+};
+
 
 const handleUploadPhoto = async (req, res) => {
 	try {
@@ -113,4 +136,5 @@ module.exports = {
 	handleSignIn,
 	handleSignUp,
 	handleLogOut,
+	handleDeleteOrderItem
 };

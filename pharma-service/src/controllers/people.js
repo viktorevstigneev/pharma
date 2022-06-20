@@ -14,8 +14,7 @@ const handleOrderTeam = async (req, res) => {
 				pass: 'rX8Q2LzNKP2LjE1eiepX',
 			},
 		});
-		// console.log('req.body.gotedData: ', req.body.gotedData);
-		console.log('req.body: ', req.body);
+	
 
 		const tttt = req.body.gotedData.map((item) => {
 			return `${item.name}  ${item.price} BYN`;
@@ -106,6 +105,7 @@ const handleUploadPhoto = async (req, res) => {
 		res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send({ error });
 	}
 };
+
 
 module.exports = {
 	handleAddTeam,

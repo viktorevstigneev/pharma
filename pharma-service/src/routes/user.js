@@ -11,6 +11,7 @@ const {
 	handleLogOut,
 	handleGetCurrentUser,
 	handleGetUser,
+	handleDeleteOrderItem
 } = require('../controllers/user');
 const isAuthenticated = require('../utils/isAuthenticated');
 
@@ -42,6 +43,7 @@ router.get('/profile/:id', handleGetUser);
 router.post('/profile', handleAddUser);
 router.delete('/profile', handleDeleteUser);
 router.patch('/profile', handleUpdateUser);
+router.patch('/profile/order/delete',type ,handleDeleteOrderItem);
 
 router.post('/upload', type, handleUploadPhoto);
 

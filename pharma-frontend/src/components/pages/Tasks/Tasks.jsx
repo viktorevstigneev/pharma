@@ -9,9 +9,7 @@ import { API_URL } from '../../../constants';
 import { Link } from 'react-router-dom';
 
 const Tasks = ({ loadTasksData, match, tasks }) => {
-	
 	useEffect(() => {
-
 		loadTasksData(match.params.id);
 	}, []);
 
@@ -27,9 +25,14 @@ const Tasks = ({ loadTasksData, match, tasks }) => {
 	}, []);
 
 	const handleAddToCart = async () => {
-		await axios
+		const responseData = await axios
 			.patch(`${API_URL}/profile`, { withCredentials: true, productID: match.params.id, userID: user._id })
-			.then((response) => setUser(response.data));
+			.then((response) => response);
+		console.log('responseData.status: ', responseData);
+
+		if (responseData.status === 200) {
+			alert('Добавлено в корзину успешно');
+		}
 	};
 
 	return (
